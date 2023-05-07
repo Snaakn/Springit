@@ -18,15 +18,6 @@ public class Vote {
     private int vote;
 
 
-    @Override
-    public String toString() {
-        return "Vote{" +
-            " id='" + getId() + "'" +
-            ", vote='" + getVote() + "'" +
-            "}";
-    }
-
-
     // user
     // link
     
