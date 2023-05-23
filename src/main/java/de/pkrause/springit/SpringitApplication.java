@@ -11,6 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import de.pkrause.springit.config.SpringitProperties;
+import de.pkrause.springit.model.Comment;
+import de.pkrause.springit.model.Link;
+import de.pkrause.springit.repository.CommentRepository;
+import de.pkrause.springit.repository.LinkRepository;
 
 @SpringBootApplication
 @EnableConfigurationProperties(SpringitProperties.class)
@@ -26,9 +30,9 @@ public class SpringitApplication {
 		SpringApplication.run(SpringitApplication.class, args);
 	}
 
-
 	/**
 	 * This is something we only do in dev mode...
+	 * 
 	 * @return prints the welcome message
 	 */
 	@Bean
@@ -36,6 +40,22 @@ public class SpringitApplication {
 	CommandLineRunner runner() {
 		return args -> {
 			log.info("Welcome Message: " + springitProperties.getWelcomeMsg());
+		};
+	}
+
+	/**
+	 * @return
+	 */
+	@Bean
+	CommandLineRunner runner(LinkRepository linkRepository, CommentRepository commentRepository) {
+		return args -> {
+			Link link = new Link("Getting Started", "https://therealdanvega.com");
+			linkRepository.save(link);
+			Comment comment = new Comment("Nice Course", link);
+			link.addComment(comment);
+
+			System.out.println(link.toString());
+			System.out.println(link.getComments());
 		};
 	}
 
