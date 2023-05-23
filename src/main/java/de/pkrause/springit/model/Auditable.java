@@ -19,7 +19,7 @@ import lombok.Setter;
 public abstract class Auditable {
     
     @CreatedBy @Getter @Setter
-    private String createBy;
+    private String createdBy;
     
     @CreatedDate @Getter @Setter
     private LocalDateTime creationDate;
