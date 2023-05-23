@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import de.pkrause.springit.config.SpringitProperties;
 import de.pkrause.springit.model.Comment;
@@ -17,6 +18,7 @@ import de.pkrause.springit.repository.CommentRepository;
 import de.pkrause.springit.repository.LinkRepository;
 
 @SpringBootApplication
+@EnableJpaAuditing
 @EnableConfigurationProperties(SpringitProperties.class)
 public class SpringitApplication {
 
@@ -42,7 +44,7 @@ public class SpringitApplication {
 			log.info("Welcome Message: " + springitProperties.getWelcomeMsg());
 		};
 	}
-
+	
 	/**
 	 * @return
 	 */
