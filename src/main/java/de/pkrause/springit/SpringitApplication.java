@@ -46,9 +46,10 @@ public class SpringitApplication {
 	}
 	
 	/**
-	 * @return
+	 * @return adds some test data
 	 */
 	@Bean
+	@Profile("dev")
 	CommandLineRunner runner(LinkRepository linkRepository, CommentRepository commentRepository) {
 		return args -> {
 			Link link = new Link("Getting Started", "https://therealdanvega.com");
