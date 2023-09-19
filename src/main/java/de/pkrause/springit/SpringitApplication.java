@@ -1,5 +1,6 @@
 package de.pkrause.springit;
 
+import org.ocpsoft.prettytime.PrettyTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +11,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 import de.pkrause.springit.config.SpringitProperties;
-import de.pkrause.springit.model.Comment;
-import de.pkrause.springit.model.Link;
-import de.pkrause.springit.repository.CommentRepository;
-import de.pkrause.springit.repository.LinkRepository;
 
 @SpringBootApplication
-@EnableJpaAuditing
 @EnableConfigurationProperties(SpringitProperties.class)
 public class SpringitApplication {
 
@@ -44,22 +41,19 @@ public class SpringitApplication {
 			log.info("Welcome Message: " + springitProperties.getWelcomeMsg());
 		};
 	}
-	
-	/**
-	 * @return adds some test data
-	 */
-	@Bean
-	@Profile("dev")
-	CommandLineRunner runner(LinkRepository linkRepository, CommentRepository commentRepository) {
-		return args -> {
-			Link link = new Link("Getting Started", "https://therealdanvega.com");
-			linkRepository.save(link);
-			Comment comment = new Comment("Nice Course", link);
-			link.addComment(comment);
 
-			System.out.println(link.toString());
-			System.out.println(link.getComments());
-		};
+	@Bean
+	PrettyTime prettyTime() {
+		return new PrettyTime();
+	}
+
+	// TODO * Configuring this bean should not be needed once Spring Boot's
+	// Thymeleaf starter includes configuration
+	// TODO for thymeleaf-extras-springsecurity5 (instead of
+	// thymeleaf-extras-springsecurity4)
+	@Bean
+	public SpringSecurityDialect securityDialect() {
+		return new SpringSecurityDialect();
 	}
 
 }
