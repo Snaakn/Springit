@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasAnyRole("ADMIN")
                 .antMatchers("/actuator/").hasRole("ADMIN")
                 .antMatchers("/").permitAll()
-                .antMatchers("/link/submit").hasRole("USER"))
+                .antMatchers("/link/submit", "/vote/link/**").hasRole("USER"))
                 .formLogin(login -> login
                         .loginPage("/login")
                         .permitAll()

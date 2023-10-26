@@ -49,25 +49,34 @@ public class Link extends Auditable {
     @Exclude
     private List<Comment> comments = new ArrayList<>();
 
+    // votes
+    @OneToMany(mappedBy = "link")
+    private List<Vote> votes = new ArrayList<>();
+
+    private int voteCount = 0;
+
+    public void addVote( Vote vote ) {
+        votes.add(vote);
+        voteCount += vote.getDirection();
+    }
+
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
     public String getDomainName() throws URISyntaxException {
-    URI uri = new URI(this.url);
-    String domain = uri.getHost();
-    return domain.startsWith("www.") ? domain.substring(4) : domain;
-}
+        URI uri = new URI(this.url);
+        String domain = uri.getHost();
+        return domain.startsWith("www.") ? domain.substring(4) : domain;
+    }
 
-public String getPrettyTime() {
-    PrettyTime pt = BeanUtil.getBean(PrettyTime.class);
-    return pt.format(convertToDateViaInstant(getCreationDate()));
-}
+    public String getPrettyTime() {
+        PrettyTime pt = BeanUtil.getBean(PrettyTime.class);
+        return pt.format(convertToDateViaInstant(getCreationDate()));
+    }
 
-private Date convertToDateViaInstant(LocalDateTime dateToConvert) {
-    return java.util.Date.from(dateToConvert.atZone(ZoneId.systemDefault()).toInstant());
-}
-
-    
+    private Date convertToDateViaInstant(LocalDateTime dateToConvert) {
+        return java.util.Date.from(dateToConvert.atZone(ZoneId.systemDefault()).toInstant());
+    }
 
 }

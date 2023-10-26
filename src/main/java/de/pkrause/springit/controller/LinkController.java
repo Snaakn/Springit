@@ -29,7 +29,8 @@ public class LinkController {
     @GetMapping("/")
     public String list(Model model) {
 
-        model.addAttribute("links", repository.findAll());
+        // model.addAttribute("links", repository.findAllByOrderByIdAsc());
+        model.addAttribute("links", repository.findAllByOrderByVoteCountDesc());
         return "link/list";
     }
 

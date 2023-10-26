@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 
@@ -33,9 +33,9 @@
         <!-- links -->
         <div class="row link" th:each="link : ${links}">
             <div class="col-1">
-                <div><a href="#" class="upvote"><i class="fas fa-arrow-up"></i></a></div>
-                <div><span class="votecount">3</span></div>
-                <div><a href="#" class="downvote"><i class="fas fa-arrow-down"></i></a></div>
+                <div><a href="#" class="upvote" th:data-id="${link.id}"><i class="fas fa-arrow-up"></i></a></div>
+                <div><span th:id="|votecount-${link.id}|" class="votecount" th:text="${link.getVoteCount()}">3</span></div>
+                <div><a href="#" th:data-id="${link.id}" th:disabled="true" class="downvote"><i class="fas fa-arrow-down"></i></a></div>
             </div>
             <div class="col-11">
                 <p class="title">
@@ -58,5 +58,25 @@
     </div>
 
 </body>
+
+<!-- <script sec:authorize="isFullyAuthenticated()"> -->
+<script >
+    const allVotes = document.querySelectorAll(".upvote, .downvote");
+    allVotes.forEach((vote) => {
+        let className = vote.className;
+        vote.addEventListener("click", (event) => {
+            const direction = className === "upvote" ? 1 : -1;
+            const linkID = vote.getAttribute("data-id");
+            const voteSum = document.getElementById("votecount-" + linkID);
+            const voteSumValue = voteSum.innerHTML;
+
+            fetch(`http://localhost:8080/vote/link/${linkID}/direction/${direction}/votecount/${voteSumValue}`)
+                .then(response => response.json())
+                .then(data => voteSum.innerHTML = data)
+                .catch(err => console.error(err));
+        });
+    });
+
+</script>
 
 </html>
