@@ -11,9 +11,11 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
-        
+
         // "THIS IS JUST A DEVELOPMENT PROBLEM..." Famous Last Words
-        if( SecurityContextHolder.getContext().getAuthentication() == null) return Optional.of("TEST_DATA");
+        if (SecurityContextHolder.getContext().getAuthentication() == null
+                || SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser"))
+            return Optional.of("administrator@springitapp.com");
 
         return Optional.of(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail());
     }

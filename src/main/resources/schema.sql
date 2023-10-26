@@ -10,6 +10,7 @@ CREATE TABLE link (
   last_modified_by VARCHAR(255),
   last_modified_date timestamp,
   title VARCHAR(255),
+  vote_count INTEGER NOT NULL DEFAULT 0,
   url VARCHAR(255)
 );
 
